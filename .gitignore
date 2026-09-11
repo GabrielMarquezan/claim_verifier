@@ -1,0 +1,18 @@
+# Data and relateds
+*.xlsx
+*.parquet
+*.csv
+*.db
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Python
+.venv
+__pycache__
+
+# Misc
+.obsidian
+.vscode
