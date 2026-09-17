@@ -1,15 +1,19 @@
 package router
 
 import (
-	"api/controller"
+	"context"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
 )
 
-func Init() *gin.Engine {
+func Init(ctx *context.Context, database *sqlx.DB) *gin.Engine {
 	router := gin.Default()
 
-	router.POST("/claims", controller.CreateClaim)
+	injection := Injection{db: database, ctx: ctx}
+	claimController := injection.NewClaimController()
+
+	router.POST("/claims", claimController.CreateClaim)
 
 	return router
 }
