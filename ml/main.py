@@ -12,7 +12,7 @@ class Claim(BaseModel):
     created_at: str
 
 
-@app.post("/claim")
+@app.post("/claims")
 def read_root(payload: Claim):
     print(payload)
     return {"payload": payload}

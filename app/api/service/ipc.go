@@ -8,7 +8,7 @@ import (
 )
 
 func StartClaimAnalysis(claim []byte, address string) error {
-	response, err := http.Post(address+"/claim", "application/json", bytes.NewBuffer(claim))
+	response, err := http.Post(address+"/claims", "application/json", bytes.NewBuffer(claim))
 	if err != nil {
 		return err
 	}
