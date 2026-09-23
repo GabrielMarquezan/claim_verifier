@@ -1,6 +1,7 @@
 package db
 
 import (
+	"api/config"
 	"os"
 	"path"
 
@@ -9,18 +10,18 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func ConnectDatabase(databaseURL string) *sqlx.DB {
-	db, err := sqlx.Open("postgres", databaseURL)
+func ConnectDatabase(cfg *config.Config) *sqlx.DB {
+	db, err := sqlx.Open("postgres", cfg.DatabaseURL)
 	if err != nil {
 		panic(err)
 	}
 
-	executeMigrations(db)
+	executeMigrations(db, cfg.MigatrionsDirPath)
 	return db
 }
 
-func executeMigrations(db *sqlx.DB) {
-	entries, err := os.ReadDir("db/migrations")
+func executeMigrations(db *sqlx.DB, migrationsPath string) {
+	entries, err := os.ReadDir(migrationsPath)
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +31,7 @@ func executeMigrations(db *sqlx.DB) {
 			continue
 		}
 
-		migration, err := os.ReadFile(path.Join("db", "migrations", entry.Name()))
+		migration, err := os.ReadFile(path.Join(migrationsPath, entry.Name()))
 		if err != nil {
 			panic(err)
 		}
