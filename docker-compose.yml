@@ -27,7 +27,12 @@ services:
     container_name: claim_verifier_ml
 
   api:
-    build: ./app/api
+    build: 
+      context: ./app/api
+      args:
+        API_WORKDIR: ${API_WORKDIR}
+        MIGRATIONS_DIR_PATH: ${MIGRATIONS_DIR_PATH}
+        API_BIN_PATH: ${API_BIN_PATH}
     container_name: claim_verifier_api
 
     depends_on:
@@ -35,10 +40,12 @@ services:
         condition: service_healthy
       ml:
         condition: service_started
+
+        
     environment:
       DATABASE_URL: 'postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable'
       RAG_WORKER_ADDR: 'http://ml:8000'
-      MIGRATIONS_DIR_PATH: "/usr/src/app/db/migrations"
+      MIGRATIONS_DIR_PATH: ${MIGRATIONS_DIR_PATH}
     ports:
       - "3000:3000" 
 
