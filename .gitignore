@@ -12,6 +12,7 @@
 # Python
 .venv
 __pycache__
+uv.lock
 
 # Misc
 .obsidian
